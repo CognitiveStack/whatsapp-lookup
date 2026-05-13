@@ -50,7 +50,7 @@ let lastLookupAt = 0;
 const MAX_SENDS_PER_DAY = 40;
 let sendsToday = 0;
 let sendDate = new Date().toISOString().slice(0, 10);
-const MAX_INBOUND_MESSAGES = 500;
+const MAX_INBOUND_MESSAGES = 1000;
 const inboundMessages = []; // { phone, jid, text, timestamp }
 
 setInterval(() => {
@@ -185,7 +185,7 @@ async function startWhatsApp() {
         const digits = jid.replace("@s.whatsapp.net", "").replace(/[^0-9]/g, "");
         phone = `+${digits}`;
       }
-      inboundMessages.push({ phone, jid, text, timestamp: new Date().toISOString() });
+      inboundMessages.push({ id: msg.key.id, phone, jid, text, timestamp: new Date().toISOString() });
       if (inboundMessages.length > MAX_INBOUND_MESSAGES) inboundMessages.shift();
     }
   });
@@ -345,6 +345,8 @@ const server = createServer(async (req, res) => {
         cachedNames: Object.keys(contactNames).length,
         sendsToday,
         maxSendsPerDay: MAX_SENDS_PER_DAY,
+        inboxBufferSize: inboundMessages.length,
+        oldestMessageTimestamp: inboundMessages[0]?.timestamp ?? null,
       })
     );
     return;
