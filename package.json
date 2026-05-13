@@ -1,0 +1,14 @@
+{
+  "name": "whatsapp-lookup",
+  "version": "1.0.0",
+  "description": "WhatsApp name lookup service for leadgen pipeline (Baileys)",
+  "main": "lookup.js",
+  "type": "module",
+  "scripts": {
+    "start": "node lookup.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.16",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
