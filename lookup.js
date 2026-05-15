@@ -47,7 +47,7 @@ let connected = false;
 let lookupCount = 0;
 let lastLookupAt = 0;
 
-const MAX_SENDS_PER_DAY = 40;
+const MAX_SENDS_PER_DAY = parseInt(process.env.MAX_SENDS_PER_DAY || '10', 10);
 let sendsToday = 0;
 let sendDate = new Date().toISOString().slice(0, 10);
 const MAX_INBOUND_MESSAGES = 1000;
@@ -414,7 +414,7 @@ const server = createServer(async (req, res) => {
 
     let filtered = inboundMessages;
     if (since) {
-      filtered = inboundMessages.filter((m) => m.timestamp >= since);
+      filtered = inboundMessages.filter((m) => m.timestamp > since);
     }
 
     res.end(JSON.stringify({ messages: filtered, total: filtered.length }));
